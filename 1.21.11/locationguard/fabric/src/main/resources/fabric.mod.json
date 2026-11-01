@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"id": "locationguard",
+	"version": "${version}",
+	"name": "Location Guard",
+	"description": "Hides location details from the debug screen and chat. Client-side settings are in config/locationguard.json.",
+	"authors": ["Location Guard"],
+	"license": "MIT",
+	"environment": "client",
+	"entrypoints": {
+		"client": ["luca.locationguard.LocationGuardFabric"]
+	},
+	"mixins": ["locationguard.mixins.json"],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "${minecraft_dependency}",
+		"java": ">=21"
+	}
+}

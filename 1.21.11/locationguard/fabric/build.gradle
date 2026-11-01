@@ -1,0 +1,51 @@
+plugins {
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = "${project.archives_base_name}-${project.minecraft_version}-fabric"
+}
+
+sourceSets {
+	main {
+		java.srcDir "${rootDir}/common/src/main/java"
+		resources.srcDir "${rootDir}/common/src/main/resources"
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+	// Fabric API wird nicht gebraucht - der Mod arbeitet nur mit Mixins.
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+}
+
+processResources {
+	def modVersion = project.version
+	def minecraftDependency = project.minecraft_dependency
+	inputs.property "version", modVersion
+	inputs.property "minecraft_dependency", minecraftDependency
+	filesMatching("fabric.mod.json") {
+		expand "version": modVersion, "minecraft_dependency": minecraftDependency
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.release = Integer.parseInt(project.java_version)
+}
+
+java {
+	withSourcesJar()
+	sourceCompatibility = JavaVersion.toVersion(project.java_version)
+	targetCompatibility = JavaVersion.toVersion(project.java_version)
+}
+
+loom {
+	mixin {
+		useLegacyMixinAp = true
+		defaultRefmapName = "locationguard.refmap.json"
+	}
+}

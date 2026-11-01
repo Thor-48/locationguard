@@ -1,0 +1,109 @@
+plugins {
+	id 'java'
+	id 'net.minecraftforge.gradle' version "${forgegradle_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = "${project.archives_base_name}-${project.minecraft_version}-forge"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(Integer.parseInt(project.java_version))
+
+// ../common enthaelt den gemeinsamen Mixin-Code fuer alle Loader
+sourceSets {
+	main {
+		java.srcDir "${rootDir}/../common/src/main/java"
+		resources.srcDir "${rootDir}/../common/src/main/resources"
+		resources.srcDir layout.buildDirectory.dir('generated/mixin')
+	}
+}
+
+def mavenizerMetadata = new groovy.json.JsonSlurper().parse(file('.gradle/mavenizer/dependencies/default.json'))
+def forgeMappings = file(mavenizerMetadata['mappings.srg.file'])
+def extractedMappings = layout.buildDirectory.file('mixin/official-to-srg.tsrg')
+def generatedRefmap = layout.buildDirectory.file('generated/mixin/locationguard.refmap.json')
+
+tasks.register('extractMixinMappings') {
+	inputs.file forgeMappings
+	outputs.file extractedMappings
+	doLast {
+		def output = extractedMappings.get().asFile
+		output.parentFile.mkdirs()
+		new java.util.zip.GZIPInputStream(forgeMappings.newInputStream()).withCloseable { input ->
+			output.withOutputStream { stream -> input.transferTo(stream) }
+		}
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	dependsOn tasks.named('extractMixinMappings')
+	doFirst {
+		generatedRefmap.get().asFile.parentFile.mkdirs()
+		layout.buildDirectory.file('mixin/compileJava.tsrg').get().asFile.parentFile.mkdirs()
+	}
+	options.compilerArgs += [
+		"-AreobfTsrgFile=${extractedMappings.get().asFile}",
+		"-AoutTsrgFile=${layout.buildDirectory.file('mixin/compileJava.tsrg').get().asFile}",
+		"-AoutRefMapFile=${generatedRefmap.get().asFile}",
+		'-AmappingTypes=tsrg',
+		'-AdefaultObfuscationEnv=searge'
+	]
+}
+
+tasks.named('processResources') {
+	dependsOn tasks.named('compileJava')
+}
+
+minecraft {
+	mappings channel: 'official', version: project.minecraft_version
+	runs {
+		client {
+			workingDir = project.file('run')
+			mods {
+				locationguard {
+					source sourceSets.main
+				}
+			}
+		}
+	}
+}
+
+repositories {
+	minecraft.mavenizer(it)
+	maven fg.forgeMaven
+	maven fg.minecraftLibsMaven
+	mavenCentral()
+}
+
+dependencies {
+	implementation minecraft.dependency("net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}")
+	// Erzeugt die Mixin-Refmap (Forges Laufzeit ist weiterhin obfuskiert)
+	annotationProcessor "org.spongepowered:mixin:0.8.7:processor"
+}
+
+def forgeSpecVersion = project.forge_version.tokenize('.')[0]
+
+processResources {
+	def modVersion = project.version
+	def minecraftDependency = project.minecraft_dependency
+	inputs.property "version", modVersion
+	inputs.property "minecraft_dependency", minecraftDependency
+	inputs.property "forge_spec_version", forgeSpecVersion
+	filesMatching("META-INF/mods.toml") {
+		expand "version": modVersion, "minecraft_dependency": minecraftDependency, "forge_spec_version": forgeSpecVersion
+	}
+}
+
+tasks.named('jar', Jar) {
+	manifest {
+		// Bei Forge muss die Mixin-Config im Manifest stehen
+		attributes['MixinConfigs'] = 'locationguard.mixins.json'
+	}
+}
+
+java {
+	withSourcesJar()
+}

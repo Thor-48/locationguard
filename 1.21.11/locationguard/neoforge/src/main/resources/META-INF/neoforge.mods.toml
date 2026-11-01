@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="locationguard"
+version="${version}"
+displayName="Location Guard"
+description='''
+Hides location details from the debug screen and chat. Client-side settings are in config/locationguard.json.
+'''
+authors="Location Guard"
+
+[[mixins]]
+config="locationguard.mixins.json"
+
+[[dependencies.locationguard]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neoforge_dependency}"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.locationguard]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_dependency}"
+    ordering="NONE"
+    side="CLIENT"

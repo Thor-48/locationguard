@@ -1,0 +1,19 @@
+{
+  "locationguard.copy_blocked": "Location Guard blocked an F3 copy while coordinate protection is active.",
+  "locationguard.debug.title": "Location Guard - Debug",
+  "locationguard.debug.active": "Protection: active",
+  "locationguard.debug.inactive": "Protection: off for this server",
+  "locationguard.debug.coordinates.normal": "F3 coordinates: real",
+  "locationguard.debug.coordinates.scrambled": "F3 coordinates: scrambled",
+  "locationguard.debug.coordinates.hidden": "F3 coordinates: hidden",
+  "locationguard.debug.rotation": "Block seed overrides: %s",
+  "locationguard.debug.offset": "Block offset overrides: %s",
+  "locationguard.debug.blocks": "Bedrock/ore blocks disguised: %s",
+  "locationguard.debug.clouds": "Cloud render calls blocked: %s",
+  "locationguard.debug.items": "Item render calls blocked: %s",
+  "locationguard.debug.chat": "Chat messages scrubbed: %s",
+  "locationguard.debug.f3": "F3 entries hidden: %s",
+  "locationguard.debug.copy": "F3+C copies blocked: %s",
+  "locationguard.debug.enabled": "Location Guard debug overlay enabled.",
+  "locationguard.debug.disabled": "Location Guard debug overlay disabled."
+}

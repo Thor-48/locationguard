@@ -1,0 +1,19 @@
+{
+  "locationguard.copy_blocked": "Location Guard hat eine F3-Kopie blockiert, weil der Koordinatenschutz aktiv ist.",
+  "locationguard.debug.title": "Location Guard - Debug",
+  "locationguard.debug.active": "Schutz: aktiv",
+  "locationguard.debug.inactive": "Schutz: fuer diesen Server aus",
+  "locationguard.debug.coordinates.normal": "F3-Koordinaten: echt",
+  "locationguard.debug.coordinates.scrambled": "F3-Koordinaten: verschleiert",
+  "locationguard.debug.coordinates.hidden": "F3-Koordinaten: ausgeblendet",
+  "locationguard.debug.rotation": "Block-Seed-Aenderungen: %s",
+  "locationguard.debug.offset": "Block-Versatz-Aenderungen: %s",
+  "locationguard.debug.blocks": "Bedrock-/Erz-Bloecke ersetzt: %s",
+  "locationguard.debug.clouds": "Blockierte Wolken-Renderaufrufe: %s",
+  "locationguard.debug.items": "Blockierte Item-Renderaufrufe: %s",
+  "locationguard.debug.chat": "Bereinigte Chatnachrichten: %s",
+  "locationguard.debug.f3": "Versteckte F3-Eintraege: %s",
+  "locationguard.debug.copy": "Blockierte F3+C-Kopien: %s",
+  "locationguard.debug.enabled": "Location-Guard-Debuganzeige aktiviert.",
+  "locationguard.debug.disabled": "Location-Guard-Debuganzeige deaktiviert."
+}

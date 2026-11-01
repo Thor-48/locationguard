@@ -1,0 +1,21 @@
+{
+	"required": true,
+	"package": "luca.locationguard.mixin",
+	"refmap": "locationguard.refmap.json",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"BlockModelShaperMixin",
+		"BlockStateBaseMixin",
+		"ChatComponentMixin",
+		"CloudRendererMixin",
+		"DebugScreenEntryListMixin",
+		"ItemEntityRendererMixin",
+		"KeyboardHandlerMixin",
+		"GuiDebugOverlayMixin",
+		"DebugEntryPositionMixin",
+		"DebugEntrySectionPositionMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

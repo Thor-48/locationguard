@@ -1,0 +1,17 @@
+tasks.register('buildForge', Exec) {
+	group = 'build'
+	description = 'Builds the Forge variant using its dedicated Gradle wrapper.'
+	workingDir = file('forge')
+
+	if (System.getProperty('os.name').toLowerCase().contains('windows')) {
+		commandLine 'cmd', '/c', 'call', file('forge/gradlew.bat').absolutePath, 'build'
+	} else {
+		commandLine './gradlew', 'build'
+	}
+}
+
+tasks.register('buildAllMods') {
+	group = 'build'
+	description = 'Builds Fabric, NeoForge, and Forge variants.'
+	dependsOn ':fabric:build', ':neoforge:build', 'buildForge'
+}

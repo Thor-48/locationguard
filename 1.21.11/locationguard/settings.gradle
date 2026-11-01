@@ -1,0 +1,19 @@
+pluginManagement {
+	repositories {
+		maven { name = 'Fabric'; url = 'https://maven.fabricmc.net/' }
+		maven { name = 'NeoForged'; url = 'https://maven.neoforged.net/releases' }
+		mavenCentral()
+		gradlePluginPortal()
+	}
+}
+
+plugins {
+	// Beschafft automatisch ein passendes JDK (21)
+	id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'locationguard'
+
+// Forge wird bewusst separat gebaut (siehe forge/), weil ForgeGradle 7
+// eine andere Gradle-Version braucht als Fabric Loom.
+include 'fabric', 'neoforge'
